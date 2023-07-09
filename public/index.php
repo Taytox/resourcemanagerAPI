@@ -3,13 +3,17 @@
 declare(strict_types=1);
 require dirname(__DIR__,1) . "/config/config.php";
 require dirname(__DIR__,1) . "/config/database.php";
-require dirname(__DIR__,1) . "/src/ErrorHandler.php";
+require dirname(__DIR__,1) . "/src/ErrorHandler.php";    
 
-#Autoload required controller classes 
+#Autoload required  gateway and controller classes 
 spl_autoload_register(function ($class){
 
-require dirname(__DIR__,1) . "/src/controller/$class.php";
-
+#Determine the correct folder to load the class from based on its name. 
+if(strpos($class, "Controller")!==false){
+    require dirname(__DIR__,1) . "/src/controller/$class.php";
+} elseif (strpos($class, "Gateway")!==false){
+    require dirname(__DIR__,1) . "/src/gateway/$class.php";
+}
 });
 
 
@@ -29,8 +33,12 @@ if ($parts[1] != "workstreams"){
 
 $id = $parts[2] ?? null;
 
+
 $database = new database($config['DB_HOST'],$config['DB_DATABASE'],$config['DB_USERNAME'],$config['DB_PASSWORD']);
 $database->getConnection();
 
-$controller = new workstreamController;
+
+
+$gateway = new WorkstreamGateway($database);
+$controller = new workstreamController($gateway);
 $controller -> processRequest($_SERVER["REQUEST_METHOD"],$id);

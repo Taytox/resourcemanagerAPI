@@ -1,6 +1,14 @@
 <?php
 class workstreamController
 {
+
+
+    public function __construct(private WorkstreamGateway $gateway)
+    {
+
+
+
+    }
     public function processRequest(string $method, ?string $id):void 
     {
 
@@ -21,11 +29,10 @@ class workstreamController
     {
         switch ($method) {
             case "GET" : 
-                echo json_encode(["id" => 123]);
+                echo json_encode($this->gateway->getAll());
                 break;
         }
 
-    
     }
     
 }
