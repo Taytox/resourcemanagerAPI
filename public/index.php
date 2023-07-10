@@ -17,7 +17,7 @@ if(strpos($class, "Controller")!==false){
 });
 
 
-
+set_error_handler("ErrorHandler::handleError");
 set_exception_handler("ErrorHandler::handleException");
 
 #Set the content type returned by the API to JSON
