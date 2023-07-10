@@ -68,11 +68,11 @@ class workstreamController
             http_response_code(405);
             header("Allow: GET, PATCH,DELETE");
         }
-        }
+    }
 
         
 
-    }
+    
     private function processCollectionRequest (String $method) : void
     {
         switch ($method) {
