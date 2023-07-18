@@ -17,6 +17,7 @@ Class WorkstreamGateway{
             $data[] = $row;
         }
         return $data;
+
     }
 
     public function create(array $data) : string{
