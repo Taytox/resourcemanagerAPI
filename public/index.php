@@ -55,5 +55,5 @@ $database->getConnection();
 
 
 $gateway = new WorkstreamGateway($database);
-$controller = new workstreamController($gateway);
+$controller = new workStreamController($gateway);
 $controller -> processRequest($_SERVER["REQUEST_METHOD"],$id);
