@@ -26,7 +26,7 @@ spl_autoload_register(function ($class){
 if(strpos($class, "Controller")!==false){
     echo('location ' . dirname(__DIR__,1) . "/src/controller/$class.php");
     #require dirname(__DIR__,1) . "/src/controller/$class.php";
-    require "src\controller\WorkStreamController.php";
+    require "src/controller/WorkStreamController.php";
 } elseif (strpos($class, "Gateway")!==false){
     require dirname(__DIR__,1) . "/src/gateway/$class.php";
 }
