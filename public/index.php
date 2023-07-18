@@ -1,7 +1,21 @@
 <?php   
 
 declare(strict_types=1);
-require dirname(__DIR__,1) . "/config/config.php";
+
+#if local dev enviroment, load config.php otherwise use environment vairables set in heroku. 
+if(dirname(__DIR__,1) . "/config/config.php"){
+    require dirname(__DIR__,1) . "/config/config.php";
+}else{
+    $config=array( 
+        'DB_HOST'=> $_ENV["DB_HOST"],
+        'DB_USERNAME'=> $_ENV["DB_USERNAME"],
+        'DB_PASSWORD'=> $_ENV["DB_PASSWORD"],
+        'DB_DATABASE'=>$_ENV["DB_DATABASE"]
+    );
+}
+
+
+
 require dirname(__DIR__,1) . "/config/database.php";
 require dirname(__DIR__,1) . "/src/ErrorHandler.php";    
 
