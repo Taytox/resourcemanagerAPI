@@ -3,8 +3,8 @@
 declare(strict_types=1);
 
 #if local dev enviroment, load config.php otherwise use environment vairables set in heroku. 
-if(is_file(dirname(__DIR__,1) . "\config\config.php")){
-    require dirname(__DIR__,1) . "\config\config.php";
+if(is_file(dirname(__DIR__,1) . "/config/config.php")){
+    require dirname(__DIR__,1) . "/config/config.php";
 }else{
     $config=array( 
         'DB_HOST'=> $_ENV["DB_HOST"],
@@ -16,18 +16,18 @@ if(is_file(dirname(__DIR__,1) . "\config\config.php")){
 
 
 
-require dirname(__DIR__,1) . "\config\database.php";
-require dirname(__DIR__,1) . "\src\ErrorHandler.php";    
+require dirname(__DIR__,1) . "/config/database.php";
+require dirname(__DIR__,1) . "/src/ErrorHandler.php";    
 
 #Autoload required  gateway and controller classes 
 spl_autoload_register(function ($class){
 
 #Determine the correct folder to load the class from based on its name. 
 if(strpos($class, "Controller")!==false){
-    echo('location ' . dirname(__DIR__,1) . "\src\controller\$class.php");
-    require dirname(__DIR__,1) . "\src\controller\$class.php";
+    echo('location ' . dirname(__DIR__,1) . "/src/controller/$class.php");
+    require dirname(__DIR__,1) . "/src/controller/$class.php";
 } elseif (strpos($class, "Gateway")!==false){
-    require dirname(__DIR__,1) . "\src\gateway\$class.php";
+    require dirname(__DIR__,1) . "/src/gateway/$class.php";
 }
 });
 
