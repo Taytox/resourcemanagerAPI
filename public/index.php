@@ -24,10 +24,9 @@ spl_autoload_register(function ($class){
 
 #Determine the correct folder to load the class from based on its name. 
 if(strpos($class, "Controller")!==false){
-    echo('location ' . dirname(__DIR__,1) . "/src/controller/$class.php");
-    require dirname(__DIR__,1) . "/src/controller/$class.php";
+    require dirname(__DIR__,1) . "\src\controller\$class.php";
 } elseif (strpos($class, "Gateway")!==false){
-    require dirname(__DIR__,1) . "/src/gateway/$class.php";
+    require dirname(__DIR__,1) . "\src\gateway\$class.php";
 }
 });
 
