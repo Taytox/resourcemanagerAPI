@@ -18,7 +18,7 @@ if(is_file(dirname(__DIR__,1) . "/config/config.php")){
 
 require dirname(__DIR__,1) . "/config/database.php";
 require dirname(__DIR__,1) . "/src/ErrorHandler.php";    
-
+require dirname(__DIR__,1) . "/src/controller/controller.php";
 #Autoload required  gateway and controller classes 
 spl_autoload_register(function ($class){
 
@@ -54,5 +54,5 @@ $database->getConnection();
 
 
 $gateway = new WorkstreamGateway($database);
-$controller = new WorkStreamController($gateway);
+$controller = new WorkStreamController($gateway,"Workstream");
 $controller -> processRequest($_SERVER["REQUEST_METHOD"],$id);
