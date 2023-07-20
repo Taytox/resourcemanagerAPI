@@ -7,7 +7,7 @@ Class TeamGateway{
     }
 
     public function getAll():array{
-        $sql = "select * FROM workstream";
+        $sql = "SELECT * FROM teams";
 
         $stmt = $this->conn->query($sql);
 
@@ -22,23 +22,24 @@ Class TeamGateway{
 
     public function create(array $data) : string{
 
-        $sql = "INSERT INTO workstream(name,location,required_staffing,current_staffing)
-                VALUES (:name, :location, :required_staffing, :current_staffing)";
+        $sql = "INSERT INTO teams(name,location)
+                VALUES (:name, :location)";
 
 
         $stmt = $this->conn->prepare($sql);
         $stmt ->bindValue(":name", $data["name"], PDO::PARAM_STR);
         $stmt ->bindValue(":location",$data["location"], PDO::PARAM_INT);
-        $stmt ->bindValue(":required_staffing",$data["required_staffing"], PDO::PARAM_INT);
-        $stmt ->bindValue(":current_staffing",$data["current_staffing"] ?? 0, PDO::PARAM_INT);
-
         $stmt ->execute(); 
         return $this->conn->lastInsertId();
     }
 
     public function get(string $id) : array | false
     {
-        $sql = "SELECT * FROM workstream WHERE workstream_id = :id";
+        $sql = "SELECT teams.teams_id, teams.name, staff.staff_id, staff.first_name, staff.last_name
+        FROM teams
+        INNER JOIN team_membership ON teams.teams_id = team_membership.team
+        INNER JOIN staff ON staff.staff_id = team_membership.staff_member
+        WHERE teams.teams_id = $id;";
         $stmt = $this->conn->prepare($sql);
         $stmt -> bindValue(":id", $id, PDO::PARAM_INT);
         $stmt ->execute();
@@ -49,15 +50,13 @@ Class TeamGateway{
 
     public function update(array $current, array $new): int
     {
-        $sql = "UPDATE workstream 
-        SET name = :name, location = :location, required_staffing = :required_staffing, current_staffing = :current_staffing
-        WHERE workstream_id = :id";
+        $sql = "UPDATE teams
+        SET name = :name, location = :location
+        WHERE teams_id = :id";
         $stmt = $this->conn->prepare($sql);
         $stmt ->bindValue(":name", $new["name"] ?? $current["name"],PDO::PARAM_STR);
         $stmt ->bindValue(":location", $new["location"] ?? $current["location"],PDO::PARAM_INT);
-        $stmt ->bindValue(":required_staffing", $new["required_staffing"] ?? $current["required_staffing"],PDO::PARAM_INT);
-        $stmt ->bindValue(":current_staffing", $new["current_staffing"] ?? $current["current_staffing"],PDO::PARAM_INT);
-        $stmt ->bindValue(":id",$current["workstream_id"], PDO::PARAM_INT);
+        $stmt ->bindValue(":id",$current["teams_id"], PDO::PARAM_INT);
         $stmt -> execute();
 
         return $stmt-> rowCount();
@@ -65,8 +64,8 @@ Class TeamGateway{
     }
     public function delete(string $id): int
     {
-        $sql = "DELETE FROM product
-                WHERE workstream_id = :id";
+        $sql = "DELETE FROM teams
+                WHERE teams_id = :id";
 
         $stmt = $this->conn->prepare($sql);
         $stmt -> bindValue(":id", $id,PDO::PARAM_INT);

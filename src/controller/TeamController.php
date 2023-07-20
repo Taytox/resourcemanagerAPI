@@ -1,5 +1,5 @@
 <?php
-class workstreamController extends controller
+class TeamController extends controller
 {
 
     private function getValidationErrors(array $data, bool $new_entry = true) : array

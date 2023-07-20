@@ -65,7 +65,7 @@ Class WorkstreamGateway{
     }
     public function delete(string $id): int
     {
-        $sql = "DELETE FROM product
+        $sql = "DELETE FROM workstream
                 WHERE workstream_id = :id";
 
         $stmt = $this->conn->prepare($sql);

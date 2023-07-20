@@ -39,20 +39,32 @@ header("Content-type:application/json; charset=UTF-8");
 
 
 $parts = explode("/",$_SERVER["REQUEST_URI"]);
-
-if ($parts[1] != "workstreams"){
-    http_response_code(404);
-}
-
-
-$id = $parts[2] ?? null;
-
-
 $database = new database($config['DB_HOST'],$config['DB_DATABASE'],$config['DB_USERNAME'],$config['DB_PASSWORD']);
 $database->getConnection();
 
+$id = $parts[2] ?? null;
+
+switch($parts[1]){
+    case'workstreams':
+        $gateway = new WorkstreamGateway($database);
+        $controller = new WorkStreamController($gateway,"Workstream");
+        $controller -> processRequest($_SERVER["REQUEST_METHOD"],$id);
+        break;
+    case'teams':
+        $gateway = new TeamGateway($database);
+        $controller = new TeamController($gateway,"team");
+        $controller -> processRequest($_SERVER["REQUEST_METHOD"],$id);
+        break;
+    default:
+        http_response_code(404);
+        break;
+
+}
 
 
-$gateway = new WorkstreamGateway($database);
-$controller = new WorkStreamController($gateway,"Workstream");
-$controller -> processRequest($_SERVER["REQUEST_METHOD"],$id);
+
+
+
+
+
+
