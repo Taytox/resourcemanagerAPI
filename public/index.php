@@ -1,5 +1,4 @@
 <?php   
-
 declare(strict_types=1);
 
 #if local dev enviroment, load config.php otherwise use environment vairables set in heroku. 
@@ -15,7 +14,7 @@ if(is_file(dirname(__DIR__,1) . "/config/config.php")){
 }
 
 
-
+require dirname(__DIR__,1) . "/src/includes/headers.php"; 
 require dirname(__DIR__,1) . "/config/database.php";
 require dirname(__DIR__,1) . "/src/ErrorHandler.php";    
 require dirname(__DIR__,1) . "/src/controller/controller.php";

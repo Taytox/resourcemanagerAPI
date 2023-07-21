@@ -1,4 +1,5 @@
 <?php
+header('Access-Control-Allow-Origin: *');
 Class WorkstreamGateway{
     private PDO $conn;
 

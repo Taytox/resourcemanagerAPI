@@ -8,7 +8,7 @@ class TeamController extends controller
         
         #No Name entered
         if ($new_entry && empty($data["name"])){
-            $errors[] = "Workstream Name required";
+            $errors[] = "Team Name required";
         }
         #No location entered
         if ($new_entry && empty($data["location"])){
