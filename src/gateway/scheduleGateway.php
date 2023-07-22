@@ -67,7 +67,7 @@ Class scheduleGateway{
         staff s1 ON sw.staff_member = s1.staff_id
     INNER JOIN
         staff s2 ON sw.assigned_by = s2.staff_id
-        WHERE scheduled_work.staff_member = $id;";
+        WHERE staff_member = :id;";
         $stmt = $this->conn->prepare($sql);
         $stmt -> bindValue(":id", $id, PDO::PARAM_INT);
         $stmt ->execute();
