@@ -35,7 +35,7 @@ Class TeamGateway{
 
     public function get(string $id) : array | false
     {
-        $sql = "SELECT teams.teams_id, teams.name, staff.staff_id, staff.first_name, staff.last_name
+        $sql = "SELECT teams.teams_id, teams.name, staff.staff_id, CONCAT(staff.first_name, ' ', staff.last_name) AS staff_name
         FROM teams
         INNER JOIN team_membership ON teams.teams_id = team_membership.team
         INNER JOIN staff ON staff.staff_id = team_membership.staff_member
