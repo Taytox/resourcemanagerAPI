@@ -39,12 +39,14 @@ Class TeamGateway{
         FROM teams
         INNER JOIN team_membership ON teams.teams_id = team_membership.team
         INNER JOIN staff ON staff.staff_id = team_membership.staff_member
-        WHERE teams.teams_id = $id;";
+        WHERE teams.teams_id = :id;";
         $stmt = $this->conn->prepare($sql);
         $stmt -> bindValue(":id", $id, PDO::PARAM_INT);
         $stmt ->execute();
-        $data = $stmt->fetch(PDO::FETCH_ASSOC);
-
+        
+        while($row = $stmt-> fetch(PDO::FETCH_ASSOC)){
+            $data[] = $row;
+        }
         return $data;
     }
 

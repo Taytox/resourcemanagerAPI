@@ -53,20 +53,19 @@ Class scheduleGateway{
     public function get(string $id):array | false
     {
         $sql = "SELECT
-        sw.Scheduled_work_id,
-        sw.start_date,
-        sw.end_date,
-        sw.workstream,
-        s1.staff_id AS staff_id,
-        CONCAT(s1.first_name, ' ', s1.last_name) AS staff_name,
-        s2.staff_id AS assigner_id,
-        CONCAT(s2.first_name, ' ', s2.last_name) AS assigner_name
-    FROM
-        scheduled_work sw
-    INNER JOIN
-        staff s1 ON sw.staff_member = s1.staff_id
-    INNER JOIN
-        staff s2 ON sw.assigned_by = s2.staff_id
+            sw.Scheduled_work_id,
+            sw.date,
+            CONCAT(s.first_name, ' ', s.last_name) AS staff_name,
+            CONCAT(s2.first_name, ' ', s2.last_name) AS assigner_name,
+            ws.name AS workstream_name
+        FROM
+            scheduled_work sw
+        INNER JOIN
+            staff s ON sw.staff_member = s.staff_id
+        INNER JOIN
+             staff s2 ON sw.assigned_by = s2.staff_id
+        INNER JOIN
+            workstream ws ON sw.workstream = ws.workstream_id
         WHERE staff_member = :id;";
         $stmt = $this->conn->prepare($sql);
         $stmt -> bindValue(":id", $id, PDO::PARAM_INT);
