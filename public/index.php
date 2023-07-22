@@ -54,6 +54,11 @@ switch($parts[1]){
         $controller = new TeamController($gateway,"team");
         $controller -> processRequest($_SERVER["REQUEST_METHOD"],$id);
         break;
+    case'schedules':
+        $gateway = new scheduleGateway($database);
+        $controller = new scheduleController($gateway,"schedule");
+        $controller -> processRequest($_SERVER["REQUEST_METHOD"],$id);
+        break;
     default:
         http_response_code(404);
         break;
