@@ -9,8 +9,7 @@ Class scheduleGateway{
     public function getAll():array{
         $sql = "SELECT
         sw.Scheduled_work_id,
-        sw.start_date,
-        sw.end_date,
+        sw.date,
         sw.workstream,
         s1.staff_id AS staff_id,
         CONCAT(s1.first_name, ' ', s1.last_name) AS staff_name,
@@ -114,3 +113,4 @@ Class scheduleGateway{
 
     }
 }
+
