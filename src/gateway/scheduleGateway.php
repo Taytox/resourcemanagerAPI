@@ -50,7 +50,7 @@ Class scheduleGateway{
         return $this->conn->lastInsertId();
     }
 
-    public function get(string $id) : array | false
+    public function get(string $id):array | false
     {
         $sql = "SELECT
         sw.Scheduled_work_id,
@@ -71,9 +71,13 @@ Class scheduleGateway{
         $stmt = $this->conn->prepare($sql);
         $stmt -> bindValue(":id", $id, PDO::PARAM_INT);
         $stmt ->execute();
-        $data = $stmt->fetch(PDO::FETCH_ASSOC);
+        $data = [];
 
+        while($row = $stmt-> fetch(PDO::FETCH_ASSOC)){
+            $data[] = $row;
+        }
         return $data;
+
     }
 
     public function update(array $current, array $new): int
