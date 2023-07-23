@@ -41,7 +41,7 @@ Class scheduleGateway{
 
         $stmt = $this->conn->prepare($sql);
         $stmt ->bindValue(":staff_member", $data["staff_member"], PDO::PARAM_STR);
-        $stmt ->bindValue(":start_date",$data["start_date"], PDO::PARAM_INT);
+        $stmt ->bindValue(":date",$data["date"], PDO::PARAM_INT);
         $stmt ->bindValue(":end_date", $data["end_date"], PDO::PARAM_STR);
         $stmt ->bindValue(":assigned_by",$data["assigned_by"], PDO::PARAM_INT);
         $stmt ->bindValue(":workstream",$data["workstream"], PDO::PARAM_INT);
@@ -54,6 +54,7 @@ Class scheduleGateway{
         $sql = "SELECT
             sw.Scheduled_work_id,
             sw.date,
+            s.staff_id,
             CONCAT(s.first_name, ' ', s.last_name) AS staff_name,
             CONCAT(s2.first_name, ' ', s2.last_name) AS assigner_name,
             ws.name AS workstream_name
