@@ -1,5 +1,4 @@
 <?php
-
 class controller
 {
         public function __construct(protected object $gateway,protected string $collectionType)
@@ -27,7 +26,7 @@ protected function processResourceRequest(string $method, string $id):void
         $result = $this->gateway->get($id);
         if(! $result){
             http_response_code(404);
-            echo json_encode(["Message"=> "$this->collectionType not found"]);
+            echo json_encode(["Message"=>"$this->collectionType not found"]);
             return;
         }
 
