@@ -1,9 +1,10 @@
 <?php   
+declare(strict_types=1);
+
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: PUT, GET, POST, DELETE");
 header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
 
-declare(strict_types=1);
 
 #if local dev enviroment, load config.php otherwise use environment vairables set in heroku. 
 if(is_file(dirname(__DIR__,1) . "/config/config.php")){
