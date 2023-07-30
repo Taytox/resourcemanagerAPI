@@ -6,13 +6,13 @@ class controller
 
     }
 
-public function processRequest(string $method, ?string $id):void
+public function processRequest(string $method, ?string $id,?string $modifier):void
 {
 
         #If an ID is in the URL, process for that single item otherwise process for a full collection. 
         if ($id) {
             
-            $this->processResourceRequest($method, $id);
+            $this->processResourceRequest($method, $id, $modifier);
             
         } else {
             
@@ -21,9 +21,11 @@ public function processRequest(string $method, ?string $id):void
         }
 
 }
-protected function processResourceRequest(string $method, string $id):void
+protected function processResourceRequest(string $method, string $id, ?string $modifier):void
     {
-        $result = $this->gateway->get($id);
+        
+    
+        $result = $this->gateway->get($id,$modifier);
         if(! $result){
             http_response_code(404);
             echo json_encode(["Message"=>"$this->collectionType not found"]);
@@ -73,7 +75,6 @@ protected function processResourceRequest(string $method, string $id):void
                 break;
             case "POST":
                 $data = (array) json_decode(file_get_contents("php://input"),true);
-                
                 
                 #Carry out input validation
                 $errors = $this->getValidationErrors($data);

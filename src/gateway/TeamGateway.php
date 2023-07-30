@@ -33,7 +33,7 @@ Class TeamGateway{
         return $this->conn->lastInsertId();
     }
 
-    public function get(string $id) : array | false
+    public function get(string $id,?string $modifier) : array | false
     {
         $sql = "SELECT teams.teams_id, teams.name, staff.staff_id, CONCAT(staff.first_name, ' ', staff.last_name) AS staff_name
         FROM teams

@@ -23,13 +23,12 @@ Class WorkstreamGateway{
 
     public function create(array $data) : string{
 
-        $sql = "INSERT INTO workstream(name,location,required_staffing,current_staffing)
-                VALUES (:name, :location, :required_staffing, :current_staffing)";
-
+        $sql = "INSERT INTO workstream(name,team,required_staffing,current_staffing)
+                VALUES (:name, :team, :required_staffing, :current_staffing)";
 
         $stmt = $this->conn->prepare($sql);
         $stmt ->bindValue(":name", $data["name"], PDO::PARAM_STR);
-        $stmt ->bindValue(":location",$data["location"], PDO::PARAM_INT);
+        $stmt ->bindValue(":team",$data["team"], PDO::PARAM_INT);
         $stmt ->bindValue(":required_staffing",$data["required_staffing"], PDO::PARAM_INT);
         $stmt ->bindValue(":current_staffing",$data["current_staffing"] ?? 0, PDO::PARAM_INT);
 
@@ -37,7 +36,7 @@ Class WorkstreamGateway{
         return $this->conn->lastInsertId();
     }
 
-    public function get(string $id) : array | false
+    public function get(string $id,?string $modifier) : array | false
     {
         $sql = "SELECT * FROM workstream WHERE workstream_id = :id";
         $stmt = $this->conn->prepare($sql);

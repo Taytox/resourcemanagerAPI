@@ -1,12 +1,6 @@
 <?php
-class scheduleController extends controller
+class TeamMembershipController extends controller
 {
-    
-
-
-
-
-   
 
     private function getValidationErrors(array $data, bool $new_entry = true) : array
     {

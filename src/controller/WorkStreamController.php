@@ -11,11 +11,11 @@ class workstreamController extends controller
             $errors[] = "Workstream Name required";
         }
         #No location entered
-        if ($new_entry && empty($data["location"])){
+        if ($new_entry && empty($data["team"])){
             $errors[] = "location ID required";
             
         }#Location is not an Int representing a location ID
-        elseif(filter_var($data["location"], FILTER_VALIDATE_INT)===false){
+        elseif(filter_var($data["team"], FILTER_VALIDATE_INT)===false){
                 $errors[] = "location ID must be an integer. ";
         }    
     

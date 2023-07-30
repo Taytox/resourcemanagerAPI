@@ -46,24 +46,38 @@ $parts = explode("/",$_SERVER["REQUEST_URI"]);
 $database = new database($config['DB_HOST'],$config['DB_DATABASE'],$config['DB_USERNAME'],$config['DB_PASSWORD']);
 $database->getConnection();
 
+
+#if there is a 3rd part to the URL then part 3 is the ID and part 2 is a modifier
+
+if(isset($parts[3]) === false && empty($parts[3]) === true){
 $id = $parts[2] ?? null;
+$modifier = null;
+}else{
+    $id = $parts[3];
+    $modifier = $parts[2];
+}
 
 switch($parts[1]){
     case'workstreams':
         $gateway = new WorkstreamGateway($database);
         $controller = new WorkStreamController($gateway,"Workstream");
-        $controller -> processRequest($_SERVER["REQUEST_METHOD"],$id);
+        $controller -> processRequest($_SERVER["REQUEST_METHOD"],$id,$modifier);
         break;
     case'teams':
         $gateway = new TeamGateway($database);
         $controller = new TeamController($gateway,"team");
-        $controller -> processRequest($_SERVER["REQUEST_METHOD"],$id);
+        $controller -> processRequest($_SERVER["REQUEST_METHOD"],$id,$modifier);
         break;
     case'schedules':
         $gateway = new scheduleGateway($database);
         $controller = new scheduleController($gateway,"schedule");
-        $controller -> processRequest($_SERVER["REQUEST_METHOD"],$id);
+        $controller -> processRequest($_SERVER["REQUEST_METHOD"],$id,$modifier);
         break;
+        case'teammembership':
+            $gateway = new TeamMembershipGateway($database);
+            $controller = new TeamMembershipController($gateway,"membership");
+            $controller -> processRequest($_SERVER["REQUEST_METHOD"],$id,$modifier);
+            break;
     default:
         http_response_code(404);
         break;
