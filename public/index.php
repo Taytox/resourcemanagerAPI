@@ -14,11 +14,13 @@ if(is_file(dirname(__DIR__,1) . "/config/config.php")){
         'DB_HOST'=> $_ENV["DB_HOST"],
         'DB_USERNAME'=> $_ENV["DB_USERNAME"],
         'DB_PASSWORD'=> $_ENV["DB_PASSWORD"],
-        'DB_DATABASE'=>$_ENV["DB_DATABASE"]
+        'DB_DATABASE'=>$_ENV["DB_DATABASE"],
+        'SECRET_KEY'=>"5A7134743777217A25432646294A404E635266556A586E3272357538782F413F"
     );
 }
-
-
+require dirname(__DIR__,1) . "/src/InvalidSignatureException.php"; 
+require dirname(__DIR__,1) . "/src/authentication\JWTCodec.php";
+require dirname(__DIR__,1) . "/src/authentication\auth.php";
 require dirname(__DIR__,1) . "/src/includes/headers.php"; 
 require dirname(__DIR__,1) . "/config/database.php";
 require dirname(__DIR__,1) . "/src/ErrorHandler.php";    
@@ -46,6 +48,11 @@ $parts = explode("/",$_SERVER["REQUEST_URI"]);
 $database = new database($config['DB_HOST'],$config['DB_DATABASE'],$config['DB_USERNAME'],$config['DB_PASSWORD']);
 $database->getConnection();
 
+$Usergateway = new UserGateway($database);
+$codec = new JWTCodec($config["SECRET_KEY"]);
+$auth = new Auth($Usergateway,$codec);
+
+
 
 #if there is a 3rd part to the URL then part 3 is the ID and part 2 is a modifier
 
@@ -59,32 +66,46 @@ $modifier = null;
 
 switch($parts[1]){
     case'workstreams':
+        if(! $auth -> authenticateAccessToken()){
+            exit;
+        }
         $gateway = new WorkstreamGateway($database);
         $controller = new WorkStreamController($gateway,"Workstream");
         $controller -> processRequest($_SERVER["REQUEST_METHOD"],$id,$modifier);
         break;
     case'teams':
+        if(! $auth -> authenticateAccessToken()){
+            exit;
+        }
         $gateway = new TeamGateway($database);
         $controller = new TeamController($gateway,"team");
         $controller -> processRequest($_SERVER["REQUEST_METHOD"],$id,$modifier);
         break;
     case'schedules':
+        if(! $auth -> authenticateAccessToken()){
+            exit;
+        }
         $gateway = new scheduleGateway($database);
         $controller = new scheduleController($gateway,"schedule");
         $controller -> processRequest($_SERVER["REQUEST_METHOD"],$id,$modifier);
         break;
         case'teammembership':
+            if(! $auth -> authenticateAccessToken()){
+                exit;
+            }
             $gateway = new TeamMembershipGateway($database);
             $controller = new TeamMembershipController($gateway,"membership");
             $controller -> processRequest($_SERVER["REQUEST_METHOD"],$id,$modifier);
+            break;
+        case 'login':
+            $controller = new AuthenicationController($Usergateway,"");
+            $controller -> getAccessToken ($config["SECRET_KEY"]) ;
             break;
     default:
         http_response_code(404);
         break;
 
 }
-
-
 
 
 
