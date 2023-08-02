@@ -75,7 +75,6 @@ protected function processResourceRequest(string $method, string $id, ?string $m
                 break;
             case "POST":
                 $data = (array) json_decode(file_get_contents("php://input"),true);
-                
                 #Carry out input validation
                 $errors = $this->getValidationErrors($data);
                 if (! empty($errors)){

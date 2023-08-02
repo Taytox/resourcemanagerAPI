@@ -23,17 +23,29 @@ Class WorkstreamGateway{
 
     public function create(array $data) : string{
 
-        $sql = "INSERT INTO workstream(name,team,required_staffing,current_staffing)
-                VALUES (:name, :team, :required_staffing, :current_staffing)";
+        $sql = "INSERT INTO workstream (name, team, required_staffing, description, start_date) 
+        VALUES (:name, :team, :required_staffing, :description, :start_date)";
 
-        $stmt = $this->conn->prepare($sql);
-        $stmt ->bindValue(":name", $data["name"], PDO::PARAM_STR);
-        $stmt ->bindValue(":team",$data["team"], PDO::PARAM_INT);
-        $stmt ->bindValue(":required_staffing",$data["required_staffing"], PDO::PARAM_INT);
-        $stmt ->bindValue(":current_staffing",$data["current_staffing"] ?? 0, PDO::PARAM_INT);
 
-        $stmt ->execute(); 
-        return $this->conn->lastInsertId();
+        $stmt = $this ->conn->prepare($sql);
+
+// Bind the parameters to the prepared statement
+    $stmt->bindParam(':name', $data['name'], PDO::PARAM_STR);
+    $stmt->bindParam(':team', $data['team'], PDO::PARAM_INT);
+    $stmt->bindParam(':required_staffing', $data['required_staffing'], PDO::PARAM_INT);
+    $stmt->bindParam(':description', $data['description'], PDO::PARAM_STR);
+    $stmt->bindParam(':start_date', $data['date'], PDO::PARAM_STR);
+
+        // $stmt ->execute(); 
+        if (!$stmt->execute()) {
+            $errorInfo = $stmt->errorInfo();
+            // Handle the error, display it, or log it
+            die("Error: " . $errorInfo[2]);
+        } else {
+             //Success message or other actions after successful insert
+             return $this->conn->lastInsertId();
+        }
+        
     }
 
     public function get(string $id,?string $modifier) : array | false
@@ -41,6 +53,7 @@ Class WorkstreamGateway{
         $sql = "SELECT * FROM workstream WHERE workstream_id = :id";
         $stmt = $this->conn->prepare($sql);
         $stmt -> bindValue(":id", $id, PDO::PARAM_INT);
+        var_dump($stmt);
         $stmt ->execute();
         $data = $stmt->fetch(PDO::FETCH_ASSOC);
 
