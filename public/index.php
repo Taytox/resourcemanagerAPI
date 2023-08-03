@@ -65,6 +65,16 @@ $modifier = null;
 }
 
 switch($parts[1]){
+    case '' :
+        if(! $auth -> authenticateAccessToken()){
+            exit;
+        }
+        break;
+    case '/':
+        if(! $auth -> authenticateAccessToken()){
+            exit;
+        }
+        break;
     case'workstreams':
         if(! $auth -> authenticateAccessToken()){
             exit;
