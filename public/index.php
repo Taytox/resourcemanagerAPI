@@ -19,8 +19,8 @@ if(is_file(dirname(__DIR__,1) . "/config/config.php")){
     );
 }
 require dirname(__DIR__,1) . "/src/InvalidSignatureException.php"; 
-require dirname(__DIR__,1) . "/src/authentication\JWTCodec.php";
-require dirname(__DIR__,1) . "/src/authentication\auth.php";
+require dirname(__DIR__,1) . "/src/authentication/JWTCodec.php";
+require dirname(__DIR__,1) . "/src/authentication/auth.php";
 require dirname(__DIR__,1) . "/src/includes/headers.php"; 
 require dirname(__DIR__,1) . "/config/database.php";
 require dirname(__DIR__,1) . "/src/ErrorHandler.php";    
