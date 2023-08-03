@@ -48,7 +48,7 @@ $parts = explode("/",$_SERVER["REQUEST_URI"]);
 $database = new database($config['DB_HOST'],$config['DB_DATABASE'],$config['DB_USERNAME'],$config['DB_PASSWORD']);
 $database->getConnection();
 
-$Usergateway = new UserGateway($database);
+$Usergateway = new userGateway($database);
 $codec = new JWTCodec($config["SECRET_KEY"]);
 $auth = new Auth($Usergateway,$codec);
 

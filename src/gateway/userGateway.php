@@ -16,8 +16,6 @@ class UserGateway
                 FROM user
                  WHERE username = :username";
 
-
-
                 
         $stmt = $this->conn->prepare($sql);
         

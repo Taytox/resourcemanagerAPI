@@ -45,14 +45,6 @@ Class scheduleGateway{
         $stmt ->execute(); 
         return $this->conn->lastInsertId();
     }
-
-    
-    
-    
-    
-    
-    
-    
     
     
     
